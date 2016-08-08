@@ -122,4 +122,34 @@ function Graph() {
   }
 
 }
+
+let cityGraph;
+cityGraph = new Graph();
+
+    cityGraph.addNode("Denver");
+    cityGraph.addNode("Chicago");
+    cityGraph.addEdge("Denver", "Chicago", 1004);
+
+    cityGraph.addNode("Seattle");
+    cityGraph.addEdge("Denver", "Seattle", 1316);
+
+    cityGraph.addNode("San Francisco");
+    cityGraph.addEdge("San Francisco", "Seattle", 807);
+    cityGraph.addEdge("San Francisco", "Denver", 1254);
+
+    cityGraph.addNode("Chicago");
+    cityGraph.addNode("Atlanta");
+    cityGraph.addEdge("Chicago", "Atlanta", 716);
+
+    cityGraph.addNode("Nashville");
+    cityGraph.addEdge("Nashville", "Atlanta", 248);
+    cityGraph.addEdge("Nashville", "Denver", 1158);
+    cityGraph.addEdge("Nashville", "Chicago", 470);
+
+    cityGraph.addNode("Austin");
+    cityGraph.addEdge("Nashville", "Austin", 859);
+    cityGraph.addEdge("Austin", "Denver", 918);
+
+console.log(cityGraph.numEdges());
+
 module.exports = Graph;
