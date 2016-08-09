@@ -2,7 +2,7 @@
 
 let GraphEdge = require('./graph-edge');
 let GraphNode = require('./graph-node');
-
+let request = require('request');
 //This represents an undirected Graph
 function Graph() {
 
@@ -52,7 +52,7 @@ function Graph() {
 
   // Find the total weight of the graph by adding up the weights of each edge
   this.weight = function() {
-   var totalEdges = this.edges;
+   let totalEdges = this.edges;
    //console.log(totalEdges);
    let sum = 0;
 
@@ -69,12 +69,12 @@ function Graph() {
   // Remember that edges are not directional: A -> B also implies B -> A
   this.findNeighbors = function(value) {
     // TODO
-    var finalArr = []; 
-    var totalEdges = this.edges;
+    let finalArr = []; 
+    let totalEdges = this.edges;
     //console.log(totalEdges);
-    for(var i = 0 ; i < totalEdges.length; i++){
-      var firstEdge = this.edges[i].first.value;
-      var secondEdge = this.edges[i].second.value
+    for(let i = 0 ; i < totalEdges.length; i++){
+      let firstEdge = this.edges[i].first.value;
+      let secondEdge = this.edges[i].second.value
       if(value === firstEdge){
         finalArr.push(secondEdge);
       } 
@@ -94,7 +94,7 @@ function Graph() {
   this.findPath = function(start, finish) {
     // TODO;
     console.log(start);
-    var neighbors = this.findNeighbors(start);
+    let neighbors = this.findNeighbors(start);
     console.log(neighbors);
     return [];
   }
@@ -150,7 +150,7 @@ cityGraph = new Graph();
     cityGraph.addEdge("Nashville", "Austin", 859);
     cityGraph.addEdge("Austin", "Denver", 918);
 
-console.log(cityGraph.numEdges());
+// console.log(cityGraph.numEdges());
 // Now that we have a working graph we can start to build out the grid for the nodes to reside in
 //We will use the Haversine formula to calculate the distance between 2 point using latitude and longitude
 Math.radians = function(degrees) {
@@ -163,47 +163,67 @@ Math.degrees = function(radians) {
 };
 
 //----------------------------------------
-// var lat1 = [37.811];
-// var long1= [-122.477];
-// var lat2 = [37.712];
-// var long2 = [-122.381]
+// let lat1 = [37.811];
+// let long1= [-122.477];
+// let lat2 = [37.712];
+// let long2 = [-122.381]
 console.log("Before execution");
 
 function CalcDistanceBetween(lat1, lon1, lat2, lon2) {
-    //Radius of the earth in:  1.609344 miles,  6371 km  | var R = (6371 / 1.609344);
-    var R = 3958.7558657440545; // Radius of earth in Miles 
-    var dLat = Math.radians(lat2-lat1);
-    var dLon = Math.radians(lon2-lon1); 
-    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    //Radius of the earth in:  1.609344 miles,  6371 km  | let R = (6371 / 1.609344);
+    let R = 3958.7558657440545; // Radius of earth in Miles 
+    let dLat = Math.radians(lat2-lat1);
+    let dLon = Math.radians(lon2-lon1); 
+    let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
             Math.cos(Math.radians(lat1)) * Math.cos(Math.radians(lat2)) * 
             Math.sin(dLon/2) * Math.sin(dLon/2); 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    var distance = R * c;
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    let distance = R * c;
     console.log(distance);
     return distance;
 }
 
-var topLeft = [37.811335, -122.519703]
-var bottomRight = [37.706835, -122.358685]
+// let topLeft = [37.811335, -122.519703]
+// let bottomRight = [37.706835, -122.358685]
 
-function createGrid(lat1, lon1, lat2, lon2, squareSide){
-  var finalArr = [];
-  var latSquareSpace = (lat2-lat1)/squareSide
-  var lonSquareSpace = (lon2-lon1)/squareSide
-  var squareNum = 0;
-  for(var i = 0; i < squareSide; i++){
-    for(var j =  0; j < squareSide; j++){
-      var squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
-      finalArr.push(squareCoordinates)
-      squareNum++;
+// function createGrid(lat1, lon1, lat2, lon2, squareSide){
+//   let finalArr = [];
+//   let latSquareSpace = (lat2-lat1)/squareSide
+//   let lonSquareSpace = (lon2-lon1)/squareSide
+//   let squareNum = 0;
+//   for(let i = 0; i < squareSide; i++){
+//     for(let j =  0; j < squareSide; j++){
+//       let squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
+//       finalArr.push(squareCoordinates)
+//       squareNum++;
+//     }
+//   }
+//   console.log(finalArr);
+//   return finalArr;
+// }
+
+// // CalcDistanceBetween(37.808179, -122.531204, 37.700398, -122.350273);
+// createGrid(37.808179, -122.531204, 37.700398, -122.350273, 7);
+
+function getData(dataUrl){
+var info = [];
+console.log("getting it")
+console.log(dataUrl)
+
+request(dataUrl, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      info.push(JSON.parse(body));
+      // console.log(info);
     }
-  }
-  console.log(finalArr);
-  return finalArr;
-}
+    for(let i = 0 ; i < info.length ; i++){
+      //console.log(info[i], "We are logggin out");
+    }
+    
+    console.log(info[0].time);
+});
+// return info;
+};
 
-CalcDistanceBetween(37.808179, -122.531204, 37.700398, -122.350273);
-createGrid(37.808179, -122.531204, 37.700398, -122.350273, 7);
-
+getData('https://data.sfgov.org/resource/9v2m-8wqu.json');
 
 module.exports = Graph;
