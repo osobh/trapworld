@@ -151,5 +151,59 @@ cityGraph = new Graph();
     cityGraph.addEdge("Austin", "Denver", 918);
 
 console.log(cityGraph.numEdges());
+// Now that we have a working graph we can start to build out the grid for the nodes to reside in
+//We will use the Haversine formula to calculate the distance between 2 point using latitude and longitude
+Math.radians = function(degrees) {
+  return degrees * Math.PI / 180;
+};
+ 
+// Converts from radians to degrees.
+Math.degrees = function(radians) {
+  return radians * 180 / Math.PI;
+};
+
+//----------------------------------------
+// var lat1 = [37.811];
+// var long1= [-122.477];
+// var lat2 = [37.712];
+// var long2 = [-122.381]
+console.log("Before execution");
+
+function CalcDistanceBetween(lat1, lon1, lat2, lon2) {
+    //Radius of the earth in:  1.609344 miles,  6371 km  | var R = (6371 / 1.609344);
+    var R = 3958.7558657440545; // Radius of earth in Miles 
+    var dLat = Math.radians(lat2-lat1);
+    var dLon = Math.radians(lon2-lon1); 
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(Math.radians(lat1)) * Math.cos(Math.radians(lat2)) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2); 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var distance = R * c;
+    console.log(distance);
+    return distance;
+}
+
+var topLeft = [37.811335, -122.519703]
+var bottomRight = [37.706835, -122.358685]
+
+function createGrid(lat1, lon1, lat2, lon2, squareSide){
+  var finalArr = [];
+  var latSquareSpace = (lat2-lat1)/squareSide
+  var lonSquareSpace = (lon2-lon1)/squareSide
+  var squareNum = 0;
+  for(var i = 0; i < squareSide; i++){
+    for(var j =  0; j < squareSide; j++){
+      var squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
+      finalArr.push(squareCoordinates)
+      squareNum++;
+    }
+  }
+  console.log(finalArr);
+  return finalArr;
+}
+
+CalcDistanceBetween(37.808179, -122.531204, 37.700398, -122.350273);
+createGrid(37.808179, -122.531204, 37.700398, -122.350273, 7);
+
 
 module.exports = Graph;
