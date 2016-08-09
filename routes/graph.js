@@ -3,6 +3,19 @@
 let GraphEdge = require('./graph-edge');
 let GraphNode = require('./graph-node');
 let request = require('request');
+let edgeWeights = {
+  murder: 10,
+  assault: 9,
+  kidnapping: 8,
+  robbery: 7,
+  fraud: 6,
+  drunk: 5,
+  domestic: 4,
+  narcotics: 3,
+  theft: 2,
+  carjacking: 1
+  
+}
 //This represents an undirected Graph
 function Graph() {
 
@@ -183,27 +196,27 @@ function CalcDistanceBetween(lat1, lon1, lat2, lon2) {
     return distance;
 }
 
-// let topLeft = [37.811335, -122.519703]
-// let bottomRight = [37.706835, -122.358685]
+let topLeft = [37.811335, -122.519703]
+let bottomRight = [37.706835, -122.358685]
 
-// function createGrid(lat1, lon1, lat2, lon2, squareSide){
-//   let finalArr = [];
-//   let latSquareSpace = (lat2-lat1)/squareSide
-//   let lonSquareSpace = (lon2-lon1)/squareSide
-//   let squareNum = 0;
-//   for(let i = 0; i < squareSide; i++){
-//     for(let j =  0; j < squareSide; j++){
-//       let squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
-//       finalArr.push(squareCoordinates)
-//       squareNum++;
-//     }
-//   }
-//   console.log(finalArr);
-//   return finalArr;
-// }
+function createGrid(lat1, lon1, lat2, lon2, squareSide){
+  let finalArr = [];
+  let latSquareSpace = (lat2-lat1)/squareSide
+  let lonSquareSpace = (lon2-lon1)/squareSide
+  let squareNum = 0;
+  for(let i = 0; i < squareSide; i++){
+    for(let j =  0; j < squareSide; j++){
+      let squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
+      finalArr.push(squareCoordinates)
+      squareNum++;
+    }
+  }
+  console.log(finalArr);
+  return finalArr;
+}
 
-// // CalcDistanceBetween(37.808179, -122.531204, 37.700398, -122.350273);
-// createGrid(37.808179, -122.531204, 37.700398, -122.350273, 7);
+// CalcDistanceBetween(37.808179, -122.531204, 37.700398, -122.350273);
+createGrid(37.808179, -122.531204, 37.700398, -122.350273, 7);
 
 function getData(dataUrl){
 var info = [];
@@ -219,11 +232,12 @@ request(dataUrl, function (error, response, body) {
     //console.log(info);
     
 //Here we loop through the returned JSON file an dprovide an interface to extracting values from the entire dataset
+
     for(let i = 0 ; i < info.length ; i++){
       var newData = (info[i]);
       for(let key in newData) {
         var obj = newData[key];
-      console.log(obj.category);
+      console.log(obj.address);
       }
     }
     
