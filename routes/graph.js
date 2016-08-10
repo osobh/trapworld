@@ -223,25 +223,23 @@ var info = [];
 console.log("getting it")
 console.log(dataUrl)
 
-//Here we request the data from the URL we want to hit
-request(dataUrl, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      info.push(JSON.parse(body));
-      // console.log(info);
-    }
-    //console.log(info);
-    
-//Here we loop through the returned JSON file an dprovide an interface to extracting values from the entire dataset
-
-    for(let i = 0 ; i < info.length ; i++){
-      var newData = (info[i]);
-      for(let key in newData) {
-        var obj = newData[key];
-      console.log(obj.address);
+  //Here we request the data from the URL we want to hit
+  request(dataUrl, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        info.push(JSON.parse(body));
       }
-    }
-    
-});
+
+  //Here we loop through the returned JSON file an dprovide an interface to extracting values from the entire dataset
+  
+      for(let i = 0 ; i < info.length ; i++){
+        var newData = (info[i]);
+        for(let key in newData) {
+          var obj = newData[key];
+        console.log(obj.address);
+        }
+      }
+      
+  });
 // return info;
 }
 
