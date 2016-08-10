@@ -1,7 +1,17 @@
 'use strict';
+// Here we initialize our node and edges for the graph
 
-let GraphEdge = require('./graph-edge');
-let GraphNode = require('./graph-node');
+function GraphEdge(first, second, weight) {
+  this.first = first;
+  this.second = second;
+  this.weight = weight;
+}
+
+function GraphNode(value) {
+  this.value = value;
+}
+
+
 let request = require('request');
 let edgeWeights = {
   murder: 10,
@@ -199,6 +209,7 @@ function CalcDistanceBetween(lat1, lon1, lat2, lon2) {
 let topLeft = [37.811335, -122.519703]
 let bottomRight = [37.706835, -122.358685]
 
+// Location where we create the grid then create nodes, then add values to these nodes.
 function createGrid(lat1, lon1, lat2, lon2, squareSide){
   let finalArr = [];
   let latSquareSpace = (lat2-lat1)/squareSide
@@ -229,7 +240,7 @@ console.log(dataUrl)
         info.push(JSON.parse(body));
       }
 
-  //Here we loop through the returned JSON file an dprovide an interface to extracting values from the entire dataset
+  //Here we loop through the returned JSON file and provide an interface to extracting values from the entire dataset
   
       for(let i = 0 ; i < info.length ; i++){
         var newData = (info[i]);
