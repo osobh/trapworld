@@ -13,6 +13,7 @@ function GraphNode(value) {
 
 
 let request = require('request');
+
 let edgeWeights = {
   murder: 10,
   assault: 9,
@@ -145,69 +146,64 @@ function Graph() {
   }
 
 }
+//---------------------------------------------------------------------------------
+// ----------------- This is where we create ou
 
-let cityGraph;
-cityGraph = new Graph();
+let trapGraph;
+trapGraph = new Graph();
 
-    cityGraph.addNode("Denver");
-    cityGraph.addNode("Chicago");
-    cityGraph.addEdge("Denver", "Chicago", 1004);
+    // trapGraph.addNode("Chicago");
+    // trapGraph.addEdge("Denver", "Chicago", 1004);
 
-    cityGraph.addNode("Seattle");
-    cityGraph.addEdge("Denver", "Seattle", 1316);
+    // trapGraph.addNode("Seattle");
+    // trapGraph.addEdge("Denver", "Seattle", 1316);
 
-    cityGraph.addNode("San Francisco");
-    cityGraph.addEdge("San Francisco", "Seattle", 807);
-    cityGraph.addEdge("San Francisco", "Denver", 1254);
+    // trapGraph.addNode("San Francisco");
+    // trapGraph.addEdge("San Francisco", "Seattle", 807);
+    // trapGraph.addEdge("San Francisco", "Denver", 1254);
 
-    cityGraph.addNode("Chicago");
-    cityGraph.addNode("Atlanta");
-    cityGraph.addEdge("Chicago", "Atlanta", 716);
+    // trapGraph.addNode("Chicago");
+    // trapGraph.addNode("Atlanta");
+    // trapGraph.addEdge("Chicago", "Atlanta", 716);
 
-    cityGraph.addNode("Nashville");
-    cityGraph.addEdge("Nashville", "Atlanta", 248);
-    cityGraph.addEdge("Nashville", "Denver", 1158);
-    cityGraph.addEdge("Nashville", "Chicago", 470);
+    // trapGraph.addNode("Nashville");
+    // trapGraph.addEdge("Nashville", "Atlanta", 248);
+    // trapGraph.addEdge("Nashville", "Denver", 1158);
+    // trapGraph.addEdge("Nashville", "Chicago", 470);
 
-    cityGraph.addNode("Austin");
-    cityGraph.addEdge("Nashville", "Austin", 859);
-    cityGraph.addEdge("Austin", "Denver", 918);
+    // trapGraph.addNode("Austin");
+    // trapGraph.addEdge("Nashville", "Austin", 859);
+    // trapGraph.addEdge("Austin", "Denver", 918);
+// console.log(trapGraph.numEdges());
 
-// console.log(cityGraph.numEdges());
+
 // Now that we have a working graph we can start to build out the grid for the nodes to reside in
 //We will use the Haversine formula to calculate the distance between 2 point using latitude and longitude
-Math.radians = function(degrees) {
-  return degrees * Math.PI / 180;
-};
+// Math.radians = function(degrees) {
+//   return degrees * Math.PI / 180;
+// };
  
-// Converts from radians to degrees.
-Math.degrees = function(radians) {
-  return radians * 180 / Math.PI;
-};
+// // Converts from radians to degrees.
+// Math.degrees = function(radians) {
+//   return radians * 180 / Math.PI;
+// };
 
-//----------------------------------------
-// let lat1 = [37.811];
-// let long1= [-122.477];
-// let lat2 = [37.712];
-// let long2 = [-122.381]
-console.log("Before execution");
+// function CalcDistanceBetween(lat1, lon1, lat2, lon2) {
+//     //Radius of the earth in:  1.609344 miles,  6371 km  | let R = (6371 / 1.609344);
+//     let R = 3958.7558657440545; // Radius of earth in Miles 
+//     let dLat = Math.radians(lat2-lat1);
+//     let dLon = Math.radians(lon2-lon1); 
+//     let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+//             Math.cos(Math.radians(lat1)) * Math.cos(Math.radians(lat2)) * 
+//             Math.sin(dLon/2) * Math.sin(dLon/2); 
+//     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+//     let distance = R * c;
+//     console.log(distance);
+//     return distance;
+// }
 
-function CalcDistanceBetween(lat1, lon1, lat2, lon2) {
-    //Radius of the earth in:  1.609344 miles,  6371 km  | let R = (6371 / 1.609344);
-    let R = 3958.7558657440545; // Radius of earth in Miles 
-    let dLat = Math.radians(lat2-lat1);
-    let dLon = Math.radians(lon2-lon1); 
-    let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(Math.radians(lat1)) * Math.cos(Math.radians(lat2)) * 
-            Math.sin(dLon/2) * Math.sin(dLon/2); 
-    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    let distance = R * c;
-    console.log(distance);
-    return distance;
-}
-
-let topLeft = [37.811335, -122.519703]
-let bottomRight = [37.706835, -122.358685]
+// let topLeft = [37.811335, -122.519703]
+// let bottomRight = [37.706835, -122.358685]
 
 // Location where we create the grid then create nodes, then add values to these nodes.
 function createGrid(lat1, lon1, lat2, lon2, squareSide){
@@ -215,6 +211,9 @@ function createGrid(lat1, lon1, lat2, lon2, squareSide){
   let latSquareSpace = (lat2-lat1)/squareSide
   let lonSquareSpace = (lon2-lon1)/squareSide
   let squareNum = 0;
+  let node = trapGraph.addNode();
+  let edge = trapGraph.addEdge();
+  
   for(let i = 0; i < squareSide; i++){
     for(let j =  0; j < squareSide; j++){
       let squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
@@ -222,31 +221,47 @@ function createGrid(lat1, lon1, lat2, lon2, squareSide){
       squareNum++;
     }
   }
-  console.log(finalArr);
+  
+  //console.log(trapGraph);
+  //console.log(finalArr);
   return finalArr;
 }
 
 // CalcDistanceBetween(37.808179, -122.531204, 37.700398, -122.350273);
-createGrid(37.808179, -122.531204, 37.700398, -122.350273, 7);
+createGrid(37.808179, -122.531204, 37.700398, -122.350273, 100);
 
+
+//Grabbing the needed data from the CrimeData API
 function getData(dataUrl){
 var info = [];
-console.log("getting it")
-console.log(dataUrl)
-
-  //Here we request the data from the URL we want to hit
-  request(dataUrl, function (error, response, body) {
+//console.log(dataUrl)
+//Here we request the data from the URL we want to hit
+request(dataUrl, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         info.push(JSON.parse(body));
       }
 
   //Here we loop through the returned JSON file and provide an interface to extracting values from the entire dataset
-  
+      var nightCrime = [];
+      var dayCrime = [];
       for(let i = 0 ; i < info.length ; i++){
         var newData = (info[i]);
         for(let key in newData) {
-          var obj = newData[key];
-        console.log(obj.address);
+          let obj = newData[key];
+          let crimeTime = obj.time.split(":");
+          let crimeCategory = obj.category.toLowerCase();
+          //console.log(crimeCategory);
+          //console.log( crimeTime[0]);
+          let exactCrimeTime =  parseInt(crimeTime[0]);
+          if(exactCrimeTime <= 20 && exactCrimeTime >= 6 ){
+            dayCrime.push(exactCrimeTime);
+           // console.log(crimeCategory);
+          console.log(crimeCategory, exactCrimeTime)
+          }else{
+            nightCrime.push(exactCrimeTime);
+            //console.log("It's a night trap out there", exactCrimeTime)
+          }
+      //console.log("It's Night Crime", nightCrime);
         }
       }
       
