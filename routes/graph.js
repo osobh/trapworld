@@ -1,5 +1,6 @@
 'use strict';
 // Here we initialize our node and edges for the graph
+let request = require('request');
 
 function GraphEdge(first, second, weight) {
   this.first = first;
@@ -7,12 +8,13 @@ function GraphEdge(first, second, weight) {
   this.weight = weight;
 }
 
-function GraphNode(value) {
+function GraphNode(value, time, category, latlong, weight) {
   this.value = value;
+  this.time = time;
+  this.category = category;
+  this.latlong = latlong;
+  this.weight = weight
 }
-
-
-let request = require('request');
 
 let edgeWeights = {
   murder: 10,
@@ -33,7 +35,7 @@ function Graph() {
   this.nodes = [];
   this.edges = [];
 
-  // Helper function to find a node in nodes
+// Helper function to find a node in nodes
   this.findNode = function (value) {
     for (let i = 0; i < this.nodes.length; i++) {
       if (this.nodes[i].value == value) {
@@ -43,15 +45,16 @@ function Graph() {
     return null;
   }
 
-  // Add a node to the list of nodes
-  this.addNode = function(value) {
+// Add a node to the list of nodes
+  this.addNode = function(value, time, category, latlong, weight) {
     if (this.findNode(value) != null) {
       return null;
     }
-    this.nodes.push(new GraphNode(value));
+    this.nodes.push(new GraphNode(value, time, category, latlong, weight));
   }
+  
 
-  // Add an edge between 2 nodes and give it a weight
+// Add an edge between 2 nodes and give it a weight
   this.addEdge = function(source, destination, weight) {
     let first = this.findNode(source);
     let second = this.findNode(destination);
@@ -61,10 +64,10 @@ function Graph() {
     this.edges.push(new GraphEdge(first, second, weight));
   }
 
-  // Get the size of the graph by returning how many nodes are in the graph
+// Get the size of the graph by returning how many nodes are in the graph
   this.size = function() {
     
-    return this.nodes.length;
+  return this.nodes.length;
 
   }
 
@@ -152,9 +155,10 @@ function Graph() {
 let trapGraph;
 trapGraph = new Graph();
 
-    // trapGraph.addNode("Chicago");
-    // trapGraph.addEdge("Denver", "Chicago", 1004);
-
+    trapGraph.addNode("Chicago");
+    trapGraph.addEdge("Denver", "Chicago", 1004);
+ console.log(trapGraph.size());
+ console.log(trapGraph.weight());
     // trapGraph.addNode("Seattle");
     // trapGraph.addEdge("Denver", "Seattle", 1316);
 
