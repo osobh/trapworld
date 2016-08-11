@@ -16,7 +16,7 @@ function GraphNode(value, time, category, latlong, weight) {
   this.weight = weight
 }
 
-let edgeWeights = {
+var edgeWeights = {
   murder: 10,
   assault: 9,
   kidnapping: 8,
@@ -215,15 +215,15 @@ function createGrid(lat1, lon1, lat2, lon2, squareSide){
   let latSquareSpace = (lat2-lat1)/squareSide
   let lonSquareSpace = (lon2-lon1)/squareSide
   let squareNum = 0;
-  let node = trapGraph.addNode();
-  let edge = trapGraph.addEdge();
+  // let node = trapGraph.addNode();
+  // let edge = trapGraph.addEdge();
   
   for(let i = 0; i < squareSide; i++){
-    for(let j =  0; j < squareSide; j++){
-      let squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
-      finalArr.push(squareCoordinates)
-      squareNum++;
-    }
+      for(let j =  0; j < squareSide; j++){
+        let squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
+        finalArr.push(squareCoordinates)
+        squareNum++;
+      }
   }
   
   //console.log(trapGraph);
@@ -254,13 +254,22 @@ request(dataUrl, function (error, response, body) {
           let obj = newData[key];
           let crimeTime = obj.time.split(":");
           let crimeCategory = obj.category.toLowerCase();
-          //console.log(crimeCategory);
+         
+         function crimeWeight(crimeCategory){
+            for(var key in edgeWeights){
+              console.log(key);
+              if(key[edgeWeights] === crimeCategory){
+                console.log(key[edgeWeights], "BOOOYAAAA");
+                return crimeCategory;
+              }
+            }
+          }
+          
           //console.log( crimeTime[0]);
           let exactCrimeTime =  parseInt(crimeTime[0]);
           if(exactCrimeTime <= 20 && exactCrimeTime >= 6 ){
             dayCrime.push(exactCrimeTime);
-           // console.log(crimeCategory);
-          console.log(crimeCategory, exactCrimeTime)
+          console.log(crimeCategory, crimeWeight())
           }else{
             nightCrime.push(exactCrimeTime);
             //console.log("It's a night trap out there", exactCrimeTime)
