@@ -92,9 +92,8 @@
         <div>
           <input id="show-listings" type="button" value="Show Listings">
           <input id="hide-listings" type="button" value="Hide Listings">
-          <hr>
-          <span class="text"> Draw a shape to search within it for homes!</span>
-          <input id="toggle-drawing"  type="button" value="Drawing Tools">
+          {{!--<span class="text"> Draw a shape to search within it for homes!</span>--}}
+          {{!--<input id="toggle-drawing"  type="button" value="Drawing Tools">--}}
         </div>
         <hr>
         <div>
@@ -102,6 +101,7 @@
           <input id="zoom-to-area" type="button" value="Zoom">
         </div>
         <hr>
+        <h2>Search Your Surroundings</h2>
         <div>
           <span class="text"> Within </span>
           <select id="max-duration">
@@ -139,13 +139,13 @@
 
         // Constructor creates a new map - only center and zoom are required.
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 40.7413549, lng: -73.9980244},
+          center: {lat: 37.7749, lng: -122.4194},
           zoom: 13,
           styles: styles,
           mapTypeControl: false
         });
 
-        // These are the real estate listings that will be shown to the user.
+        // These are the locations that will be plotted on the map for the pathfinding
         // Normally we'd have these in a database instead.
         var locations = [
           {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
@@ -158,17 +158,17 @@
 
         var largeInfowindow = new google.maps.InfoWindow();
 
-        // Initialize the drawing manager.
-        var drawingManager = new google.maps.drawing.DrawingManager({
-          drawingMode: google.maps.drawing.OverlayType.POLYGON,
-          drawingControl: true,
-          drawingControlOptions: {
-            position: google.maps.ControlPosition.TOP_LEFT,
-            drawingModes: [
-              google.maps.drawing.OverlayType.POLYGON
-            ]
-          }
-        });
+        // // Initialize the drawing manager.
+        // var drawingManager = new google.maps.drawing.DrawingManager({
+        //   drawingMode: google.maps.drawing.OverlayType.POLYGON,
+        //   drawingControl: true,
+        //   drawingControlOptions: {
+        //     position: google.maps.ControlPosition.TOP_LEFT,
+        //     drawingModes: [
+        //       google.maps.drawing.OverlayType.POLYGON
+        //     ]
+        //   }
+        // });
 
         // Style the markers a bit. This will be our listing marker icon.
         var defaultIcon = makeMarkerIcon('0091ff');
@@ -209,9 +209,9 @@
         document.getElementById('show-listings').addEventListener('click', showListings);
         document.getElementById('hide-listings').addEventListener('click', hideListings);
 
-        document.getElementById('toggle-drawing').addEventListener('click', function() {
-          toggleDrawing(drawingManager);
-        });
+        // document.getElementById('toggle-drawing').addEventListener('click', function() {
+        //   toggleDrawing(drawingManager);
+        // });
 
         document.getElementById('zoom-to-area').addEventListener('click', function() {
           zoomToArea();
@@ -224,24 +224,24 @@
         // Add an event listener so that the polygon is captured,  call the
         // searchWithinPolygon function. This will show the markers in the polygon,
         // and hide any outside of it.
-        drawingManager.addListener('overlaycomplete', function(event) {
-          // First, check if there is an existing polygon.
-          // If there is, get rid of it and remove the markers
-          if (polygon) {
-            polygon.setMap(null);
-            hideListings(markers);
-          }
-          // Switching the drawing mode to the HAND (i.e., no longer drawing).
-          drawingManager.setDrawingMode(null);
-          // Creating a new editable polygon from the overlay.
-          polygon = event.overlay;
-          polygon.setEditable(true);
-          // Searching within the polygon.
-          searchWithinPolygon();
-          // Make sure the search is re-done if the poly is changed.
-          polygon.getPath().addListener('set_at', searchWithinPolygon);
-          polygon.getPath().addListener('insert_at', searchWithinPolygon);
-        });
+        // drawingManager.addListener('overlaycomplete', function(event) {
+        //   // First, check if there is an existing polygon.
+        //   // If there is, get rid of it and remove the markers
+        //   if (polygon) {
+        //     polygon.setMap(null);
+        //     hideListings(markers);
+        //   }
+        //   // Switching the drawing mode to the HAND (i.e., no longer drawing).
+        //   drawingManager.setDrawingMode(null);
+        //   // Creating a new editable polygon from the overlay.
+        //   polygon = event.overlay;
+        //   polygon.setEditable(true);
+        //   // Searching within the polygon.
+        //   searchWithinPolygon();
+        //   // Make sure the search is re-done if the poly is changed.
+        //   polygon.getPath().addListener('set_at', searchWithinPolygon);
+        //   polygon.getPath().addListener('insert_at', searchWithinPolygon);
+        // });
       }
 
       // This function populates the infowindow when the marker is clicked. We'll only allow
@@ -313,7 +313,7 @@
       // of 0, 0 and be anchored at 10, 34).
       function makeMarkerIcon(markerColor) {
         var markerImage = new google.maps.MarkerImage(
-          'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+          'https://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
           '|40|_|%E2%80%A2',
           new google.maps.Size(21, 34),
           new google.maps.Point(0, 0),
@@ -322,31 +322,31 @@
         return markerImage;
       }
 
-      // This shows and hides (respectively) the drawing options.
-      function toggleDrawing(drawingManager) {
-        if (drawingManager.map) {
-          drawingManager.setMap(null);
-          // In case the user drew anything, get rid of the polygon
-          if (polygon !== null) {
-            polygon.setMap(null);
-          }
-        } else {
-          drawingManager.setMap(map);
-        }
-      }
+      // // This shows and hides (respectively) the drawing options.
+      // function toggleDrawing(drawingManager) {
+      //   if (drawingManager.map) {
+      //     drawingManager.setMap(null);
+      //     // In case the user drew anything, get rid of the polygon
+      //     if (polygon !== null) {
+      //       polygon.setMap(null);
+      //     }
+      //   } else {
+      //     drawingManager.setMap(map);
+      //   }
+      // }
 
       // This function hides all markers outside the polygon,
       // and shows only the ones within it. This is so that the
       // user can specify an exact area of search.
-      function searchWithinPolygon() {
-        for (var i = 0; i < markers.length; i++) {
-          if (google.maps.geometry.poly.containsLocation(markers[i].position, polygon)) {
-            markers[i].setMap(map);
-          } else {
-            markers[i].setMap(null);
-          }
-        }
-      }
+      // function searchWithinPolygon() {
+      //   for (var i = 0; i < markers.length; i++) {
+      //     if (google.maps.geometry.poly.containsLocation(markers[i].position, polygon)) {
+      //       markers[i].setMap(map);
+      //     } else {
+      //       markers[i].setMap(null);
+      //     }
+      //   }
+      // }
 
       // This function takes the input value in the find nearby area text input
       // locates it, and then zooms into that area. This is so that the user can

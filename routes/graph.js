@@ -8,9 +8,8 @@ function GraphEdge(first, second, weight) {
   this.weight = weight;
 }
 
-function GraphNode(value, time, category, latlong, weight) {
+function GraphNode(value, category, latlong, weight) {
   this.value = value;
-  this.time = time;
   this.category = category;
   this.latlong = latlong;
   this.weight = weight
@@ -212,9 +211,9 @@ request(dataUrl, function (error, response, body) {
           let crimeTime = obj.time.split(":");
           let crimeCategory = obj.category;
          
-         function crimeWeight(crimeCategory){
+      function crimeWeight(crimeCategory){
             for(var key in edgeWeights){
-              console.log(edgeWeights[key]);
+              //console.log(edgeWeights[key]);
               if(key === crimeCategory){
                 //console.log(crimeCategory[key], "BOOOYAAAA");
                 return edgeWeights[key];
@@ -229,7 +228,7 @@ request(dataUrl, function (error, response, body) {
           console.log(crimeCategory, crimeWeight())
           }else{
             nightCrime.push(exactCrimeTime);
-            //console.log("It's a night trap out there", exactCrimeTime)
+            console.log("It's a night trap out there", exactCrimeTime)
           }
       //console.log("It's Night Crime", nightCrime);
         }
