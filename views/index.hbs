@@ -147,6 +147,7 @@
 
         // These are the locations that will be plotted on the map for the pathfinding
         // Normally we'd have these in a database instead.
+        
         var locations = [
           {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
           {title: 'Chelsea Loft', location: {lat: 40.7444883, lng: -73.9949465}},
@@ -364,7 +365,7 @@
           // on it and zoom in
           geocoder.geocode(
             { address: address,
-              componentRestrictions: {locality: 'New York'}
+              componentRestrictions: {locality: 'California'}
             }, function(results, status) {
               if (status == google.maps.GeocoderStatus.OK) {
                 map.setCenter(results[0].geometry.location);
