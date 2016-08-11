@@ -190,11 +190,11 @@ function createGrid(lat1, lon1, lat2, lon2, squareSide){
 // CalcDistanceBetween(37.808179, -122.531204, 37.700398, -122.350273);
 var points = createGrid(37.808179, -122.531204, 37.700398, -122.350273, 100);
 
-function finalGridSquares(array){
+function finalGridSquares(array){ //puts grid via array of 4 points (also within the array, along with square number)
   var squares = [];
   var squareNum = 1;
   for (var i = 0; i < 100*100 - 100; i++) {
-    if(i % 101 !== 1){
+    if(i % 100 !== 99){
       squares.push(array[i], array[i + 1], array[i + 100], array[i + 101], squareNum);
       squareNum++;
     }
@@ -202,6 +202,9 @@ function finalGridSquares(array){
   return squares;
 }
 
+function plotPointInGrid(point){
+  for
+}
 
 //Grabbing the needed data from the CrimeData API
 function getData(dataUrl){
