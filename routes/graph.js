@@ -171,10 +171,10 @@ function createGrid(lat1, lon1, lat2, lon2, squareSide){
   let finalArr = [];
   let latSquareSpace = (lat2-lat1)/squareSide
   let lonSquareSpace = (lon2-lon1)/squareSide
-  let squareNum = 0;
+  let squareNum = 1;
   // let node = trapGraph.addNode();
   // let edge = trapGraph.addEdge();
-  
+
   for(let i = 0; i < squareSide; i++){
       for(let j =  0; j < squareSide; j++){
         let squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
@@ -187,9 +187,20 @@ function createGrid(lat1, lon1, lat2, lon2, squareSide){
   //console.log(finalArr);
   return finalArr;
 }
-
 // CalcDistanceBetween(37.808179, -122.531204, 37.700398, -122.350273);
-createGrid(37.808179, -122.531204, 37.700398, -122.350273, 100);
+var points = createGrid(37.808179, -122.531204, 37.700398, -122.350273, 100);
+
+function finalGridSquares(array){
+  var squares = [];
+  var squareNum = 1;
+  for (var i = 0; i < 100*100 - 100; i++) {
+    if(i % 4 !== 3){
+      squares.push(array[i], array[i + 1], array[i + 100], array[i + 101], squareNum);
+      squareNum++;
+    }
+  }
+  return squares;
+}
 
 
 //Grabbing the needed data from the CrimeData API
@@ -211,7 +222,7 @@ request(dataUrl, function (error, response, body) {
           let obj = newData[key];
           let crimeTime = obj.time.split(":");
           let crimeCategory = obj.category;
-         
+
          function crimeWeight(crimeCategory){
             for(var key in edgeWeights){
               console.log(edgeWeights[key]);
@@ -221,7 +232,7 @@ request(dataUrl, function (error, response, body) {
               }
             }
           }
-          
+
           //console.log( crimeTime[0]);
           let exactCrimeTime =  parseInt(crimeTime[0]);
           if(exactCrimeTime <= 20 && exactCrimeTime >= 6 ){
