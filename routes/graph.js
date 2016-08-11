@@ -194,7 +194,7 @@ function finalGridSquares(array){
   var squares = [];
   var squareNum = 1;
   for (var i = 0; i < 100*100 - 100; i++) {
-    if(i % 4 !== 3){
+    if(i % 101 !== 1){
       squares.push(array[i], array[i + 1], array[i + 100], array[i + 101], squareNum);
       squareNum++;
     }
