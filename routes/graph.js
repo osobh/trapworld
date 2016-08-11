@@ -16,6 +16,7 @@ function GraphNode(value, time, category, latlong, weight) {
   this.weight = weight
 }
 
+<<<<<<< HEAD
 var edgeWeights = {
   murder: 10,
   assault: 9,
@@ -23,11 +24,32 @@ var edgeWeights = {
   robbery: 7,
   fraud: 6,
   drunk: 5,
+=======
+let edgeWeights = {
+  MURDER: 10,
+  ASSAULT: 9,
+  KIDNAPPING: 9,
+  ROBBERY: 7,
+  FRAUD: 6,
+  DRUNKENNESS: 5,
+>>>>>>> 3755e4d490314431c203cb204820033aba41df60
   domestic: 4,
-  narcotics: 3,
-  theft: 2,
-  carjacking: 1
-  
+  'DRUG/NARCOTIC': 3,
+  'LARCENY/THEFT': 6,
+  carjacking: 1,
+  'NON-CRIMINAL': 1,
+  'DISORDERLY CONDUCT': 3,
+  BURGLARY: 5,
+  VANDALISM: 3,
+  'SUSPICIOUS OCC': 3,
+  'WEAPON LAWS': 4,
+  TRESPASS: 3,
+  WARRANTS: 2,
+  ARSON: 6,
+  'FORGERY/COUNTERFEITING': 1,
+  'DRIVING UNDER THE INFLUENCE': 5,
+  'SEX OFFENSES, FORCIBLE': 9
+
 }
 //This represents an undirected Graph
 function Graph() {
@@ -52,7 +74,7 @@ function Graph() {
     }
     this.nodes.push(new GraphNode(value, time, category, latlong, weight));
   }
-  
+
 
 // Add an edge between 2 nodes and give it a weight
   this.addEdge = function(source, destination, weight) {
@@ -66,7 +88,7 @@ function Graph() {
 
 // Get the size of the graph by returning how many nodes are in the graph
   this.size = function() {
-    
+
   return this.nodes.length;
 
   }
@@ -96,7 +118,7 @@ function Graph() {
   // Remember that edges are not directional: A -> B also implies B -> A
   this.findNeighbors = function(value) {
     // TODO
-    let finalArr = []; 
+    let finalArr = [];
     let totalEdges = this.edges;
     //console.log(totalEdges);
     for(let i = 0 ; i < totalEdges.length; i++){
@@ -104,12 +126,12 @@ function Graph() {
       let secondEdge = this.edges[i].second.value
       if(value === firstEdge){
         finalArr.push(secondEdge);
-      } 
+      }
 
       else if(value === secondEdge){
         finalArr.push(firstEdge);
       }
-      
+
     }
     return finalArr;
   }
@@ -155,59 +177,6 @@ function Graph() {
 let trapGraph;
 trapGraph = new Graph();
 
-    trapGraph.addNode("Chicago");
-    trapGraph.addEdge("Denver", "Chicago", 1004);
- console.log(trapGraph.size());
- console.log(trapGraph.weight());
-    // trapGraph.addNode("Seattle");
-    // trapGraph.addEdge("Denver", "Seattle", 1316);
-
-    // trapGraph.addNode("San Francisco");
-    // trapGraph.addEdge("San Francisco", "Seattle", 807);
-    // trapGraph.addEdge("San Francisco", "Denver", 1254);
-
-    // trapGraph.addNode("Chicago");
-    // trapGraph.addNode("Atlanta");
-    // trapGraph.addEdge("Chicago", "Atlanta", 716);
-
-    // trapGraph.addNode("Nashville");
-    // trapGraph.addEdge("Nashville", "Atlanta", 248);
-    // trapGraph.addEdge("Nashville", "Denver", 1158);
-    // trapGraph.addEdge("Nashville", "Chicago", 470);
-
-    // trapGraph.addNode("Austin");
-    // trapGraph.addEdge("Nashville", "Austin", 859);
-    // trapGraph.addEdge("Austin", "Denver", 918);
-// console.log(trapGraph.numEdges());
-
-
-// Now that we have a working graph we can start to build out the grid for the nodes to reside in
-//We will use the Haversine formula to calculate the distance between 2 point using latitude and longitude
-// Math.radians = function(degrees) {
-//   return degrees * Math.PI / 180;
-// };
- 
-// // Converts from radians to degrees.
-// Math.degrees = function(radians) {
-//   return radians * 180 / Math.PI;
-// };
-
-// function CalcDistanceBetween(lat1, lon1, lat2, lon2) {
-//     //Radius of the earth in:  1.609344 miles,  6371 km  | let R = (6371 / 1.609344);
-//     let R = 3958.7558657440545; // Radius of earth in Miles 
-//     let dLat = Math.radians(lat2-lat1);
-//     let dLon = Math.radians(lon2-lon1); 
-//     let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-//             Math.cos(Math.radians(lat1)) * Math.cos(Math.radians(lat2)) * 
-//             Math.sin(dLon/2) * Math.sin(dLon/2); 
-//     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-//     let distance = R * c;
-//     console.log(distance);
-//     return distance;
-// }
-
-// let topLeft = [37.811335, -122.519703]
-// let bottomRight = [37.706835, -122.358685]
 
 // Location where we create the grid then create nodes, then add values to these nodes.
 function createGrid(lat1, lon1, lat2, lon2, squareSide){
@@ -215,9 +184,15 @@ function createGrid(lat1, lon1, lat2, lon2, squareSide){
   let latSquareSpace = (lat2-lat1)/squareSide
   let lonSquareSpace = (lon2-lon1)/squareSide
   let squareNum = 0;
+<<<<<<< HEAD
   // let node = trapGraph.addNode();
   // let edge = trapGraph.addEdge();
   
+=======
+  let node = trapGraph.addNode();
+  let edge = trapGraph.addEdge();
+
+>>>>>>> 3755e4d490314431c203cb204820033aba41df60
   for(let i = 0; i < squareSide; i++){
       for(let j =  0; j < squareSide; j++){
         let squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
@@ -225,7 +200,7 @@ function createGrid(lat1, lon1, lat2, lon2, squareSide){
         squareNum++;
       }
   }
-  
+
   //console.log(trapGraph);
   //console.log(finalArr);
   return finalArr;
@@ -253,6 +228,7 @@ request(dataUrl, function (error, response, body) {
         for(let key in newData) {
           let obj = newData[key];
           let crimeTime = obj.time.split(":");
+<<<<<<< HEAD
           let crimeCategory = obj.category.toLowerCase();
          
          function crimeWeight(crimeCategory){
@@ -265,6 +241,10 @@ request(dataUrl, function (error, response, body) {
             }
           }
           
+=======
+          let crimeCategory = obj.category;
+          //console.log(crimeCategory);
+>>>>>>> 3755e4d490314431c203cb204820033aba41df60
           //console.log( crimeTime[0]);
           let exactCrimeTime =  parseInt(crimeTime[0]);
           if(exactCrimeTime <= 20 && exactCrimeTime >= 6 ){
@@ -277,7 +257,7 @@ request(dataUrl, function (error, response, body) {
       //console.log("It's Night Crime", nightCrime);
         }
       }
-      
+
   });
 // return info;
 }
