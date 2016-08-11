@@ -8,12 +8,13 @@ function GraphEdge(first, second, weight) {
   this.weight = weight;
 }
 
-function GraphNode(NWcorner, NEcorner, SWcorner, SEcorner, squareNum) { //gonna need to refactor this
+function GraphNode(NWcorner, NEcorner, SWcorner, SEcorner, squareNum, weight) { //gonna need to refactor this
   this.NWcorner = NWcorner;
   this.NEcorner = NEcorner;
   this.SWcorner = SWcorner;
   this.SEcorner = SEcorner;
   this.squareNum = squareNum;
+  this.weight = weight;
 }
 
 let edgeWeights = {
@@ -64,13 +65,13 @@ function Graph() {
   }
 
 // Add an edge between 2 nodes and give it a weight
-  this.addEdge = function(source, destination, weight) {
-    let first = this.findNode(source);
-    let second = this.findNode(destination);
-    if (first == null || second == null) {
-      return;
+  this.addEdge = function(top, bottom, left, right, weight) {
+    var north = this.findNode(top);
+    var south = this.findNode(bottom);
+    var west = this.findNode(left);
+    var east = this.findNode(right);
     }
-    this.edges.push(new GraphEdge(first, second, weight));
+    this.edges.push(new GraphEdge(north, south, west, east, weight));
   }
 
 // Get the size of the graph by returning how many nodes are in the graph
@@ -193,9 +194,11 @@ function finalGridSquares(array){ //puts grid via array of 4 points (also within
     return squares;
 }
 
-function findNodeToPlaceCrime(x, y, weight){ //crime has lat and long & serverity in object form
-  for (var i = 0; i < node.length; i++){
-
+function findNodeToPlaceCrimeWeight(x, y, weight){ //crime has lat and long & serverity in object form
+  for (var i = 0; i < squares.length; i++){
+    if((x > squares.NWcorner[0])&&(x < squares.NEcorner[0])&&(y > squares.SWcorner[1])&&(y < squares.NWcorner[1])){
+      this.node.weight += weight;
+    }
   }
 };
 
