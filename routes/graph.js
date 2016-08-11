@@ -16,6 +16,15 @@ function GraphNode(value, time, category, latlong, weight) {
   this.weight = weight
 }
 
+<<<<<<< HEAD
+var edgeWeights = {
+  murder: 10,
+  assault: 9,
+  kidnapping: 8,
+  robbery: 7,
+  fraud: 6,
+  drunk: 5,
+=======
 let edgeWeights = {
   MURDER: 10,
   ASSAULT: 9,
@@ -23,6 +32,7 @@ let edgeWeights = {
   ROBBERY: 7,
   FRAUD: 6,
   DRUNKENNESS: 5,
+>>>>>>> 3755e4d490314431c203cb204820033aba41df60
   domestic: 4,
   'DRUG/NARCOTIC': 3,
   'LARCENY/THEFT': 6,
@@ -174,15 +184,21 @@ function createGrid(lat1, lon1, lat2, lon2, squareSide){
   let latSquareSpace = (lat2-lat1)/squareSide
   let lonSquareSpace = (lon2-lon1)/squareSide
   let squareNum = 0;
+<<<<<<< HEAD
+  // let node = trapGraph.addNode();
+  // let edge = trapGraph.addEdge();
+  
+=======
   let node = trapGraph.addNode();
   let edge = trapGraph.addEdge();
 
+>>>>>>> 3755e4d490314431c203cb204820033aba41df60
   for(let i = 0; i < squareSide; i++){
-    for(let j =  0; j < squareSide; j++){
-      let squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
-      finalArr.push(squareCoordinates)
-      squareNum++;
-    }
+      for(let j =  0; j < squareSide; j++){
+        let squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
+        finalArr.push(squareCoordinates)
+        squareNum++;
+      }
   }
 
   //console.log(trapGraph);
@@ -212,14 +228,28 @@ request(dataUrl, function (error, response, body) {
         for(let key in newData) {
           let obj = newData[key];
           let crimeTime = obj.time.split(":");
+<<<<<<< HEAD
+          let crimeCategory = obj.category.toLowerCase();
+         
+         function crimeWeight(crimeCategory){
+            for(var key in edgeWeights){
+              console.log(key);
+              if(key[edgeWeights] === crimeCategory){
+                console.log(key[edgeWeights], "BOOOYAAAA");
+                return crimeCategory;
+              }
+            }
+          }
+          
+=======
           let crimeCategory = obj.category;
           //console.log(crimeCategory);
+>>>>>>> 3755e4d490314431c203cb204820033aba41df60
           //console.log( crimeTime[0]);
           let exactCrimeTime =  parseInt(crimeTime[0]);
           if(exactCrimeTime <= 20 && exactCrimeTime >= 6 ){
             dayCrime.push(exactCrimeTime);
-           // console.log(crimeCategory);
-          console.log(crimeCategory, exactCrimeTime)
+          console.log(crimeCategory, crimeWeight())
           }else{
             nightCrime.push(exactCrimeTime);
             //console.log("It's a night trap out there", exactCrimeTime)
