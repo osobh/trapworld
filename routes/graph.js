@@ -16,15 +16,6 @@ function GraphNode(value, time, category, latlong, weight) {
   this.weight = weight
 }
 
-<<<<<<< HEAD
-var edgeWeights = {
-  murder: 10,
-  assault: 9,
-  kidnapping: 8,
-  robbery: 7,
-  fraud: 6,
-  drunk: 5,
-=======
 let edgeWeights = {
   MURDER: 10,
   ASSAULT: 9,
@@ -32,17 +23,14 @@ let edgeWeights = {
   ROBBERY: 7,
   FRAUD: 6,
   DRUNKENNESS: 5,
->>>>>>> 3755e4d490314431c203cb204820033aba41df60
-  domestic: 4,
-  'DRUG/NARCOTIC': 3,
+  NARCOTICS : 3,
   'LARCENY/THEFT': 6,
-  carjacking: 1,
-  'NON-CRIMINAL': 1,
+  'NON CRIMINAL': 1,
   'DISORDERLY CONDUCT': 3,
   BURGLARY: 5,
   VANDALISM: 3,
   'SUSPICIOUS OCC': 3,
-  'WEAPON LAWS': 4,
+  WEAPONLAWS: 4,
   TRESPASS: 3,
   WARRANTS: 2,
   ARSON: 6,
@@ -184,15 +172,9 @@ function createGrid(lat1, lon1, lat2, lon2, squareSide){
   let latSquareSpace = (lat2-lat1)/squareSide
   let lonSquareSpace = (lon2-lon1)/squareSide
   let squareNum = 0;
-<<<<<<< HEAD
   // let node = trapGraph.addNode();
   // let edge = trapGraph.addEdge();
   
-=======
-  let node = trapGraph.addNode();
-  let edge = trapGraph.addEdge();
-
->>>>>>> 3755e4d490314431c203cb204820033aba41df60
   for(let i = 0; i < squareSide; i++){
       for(let j =  0; j < squareSide; j++){
         let squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
@@ -228,23 +210,18 @@ request(dataUrl, function (error, response, body) {
         for(let key in newData) {
           let obj = newData[key];
           let crimeTime = obj.time.split(":");
-<<<<<<< HEAD
-          let crimeCategory = obj.category.toLowerCase();
+          let crimeCategory = obj.category;
          
          function crimeWeight(crimeCategory){
             for(var key in edgeWeights){
-              console.log(key);
-              if(key[edgeWeights] === crimeCategory){
-                console.log(key[edgeWeights], "BOOOYAAAA");
-                return crimeCategory;
+              console.log(edgeWeights[key]);
+              if(key === crimeCategory){
+                //console.log(crimeCategory[key], "BOOOYAAAA");
+                return edgeWeights[key];
               }
             }
           }
           
-=======
-          let crimeCategory = obj.category;
-          //console.log(crimeCategory);
->>>>>>> 3755e4d490314431c203cb204820033aba41df60
           //console.log( crimeTime[0]);
           let exactCrimeTime =  parseInt(crimeTime[0]);
           if(exactCrimeTime <= 20 && exactCrimeTime >= 6 ){
