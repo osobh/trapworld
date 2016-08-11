@@ -10,10 +10,19 @@ router.get('/crime', function(req, res) {
     request(dataUrl, function (error, response, body) {
           if (!error && response.statusCode == 200) {
             console.log(body)
-            res.json(body); 
-            // info.push(JSON.parse(body));
-            console.log("We are Pushing to info")
-          }
+            var nightCrime = [];
+            var dayCrime = [];
+            for(var i = 0 ; i < body.length ; i++){
+                var newData = (body[i]);
+                for(var key in newData) {
+                  var obj = newData[key];
+                  var crimeTime = obj.time;
+                  var crimeCategory = obj.category;
+                  res.json(JSON.parse(crimeCategory)); 
+                    // info.push(JSON.parse(body));
+                  }
+            }
+        }
     });
 });
 
