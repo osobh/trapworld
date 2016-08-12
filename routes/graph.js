@@ -230,10 +230,12 @@ function finalGridSquares(array){ //puts grid via array of 4 points (also within
   for (var i = 0; i < 100*100 - 100; i++) {
     if(i % 100 !== 99){
       var node = new GraphNode(array[i], array[i + 1], array[i + 100], array[i + 101], squareNum);
+
       squareNum++;
       squares.push(node)
     }
   }
+  var edge = new GraphEdge()
     return squares;
 }
 
@@ -264,7 +266,9 @@ function crimeWeight(crimeCategory){
     var dy = abs(node.y - goal.y);
     return (dx + dy);
  }
-var theGrid = finalGridSquares(points);
+var theDayGrid = finalGridSquares(points);
+var theNightGrid = finalGridSquares(points);
+
 // console.log(theGrid.NWcorner)
 // console.log(theGrid[0].NWcorner[0])
 //Grabbing the needed data from the CrimeData API
@@ -307,14 +311,14 @@ function getData(dataUrl){
       for (let i = 0; i < dayCrime.length; i++) {
         let weight = crimeWeight(dayCrime[i].category);
         // console.log(dayCrime[i])
-        findNodeToPlaceCrimeWeight(dayCrime[i].x, dayCrime[i].y, weight, theGrid)
+        findNodeToPlaceCrimeWeight(dayCrime[i].x, dayCrime[i].y, weight, theDayGrid)
       }
 
       for (let i = 0; i < nightCrime.length; i++) {
         let weight = crimeWeight(nightCrime[i].category);
-        findNodeToPlaceCrimeWeight(nightCrime[i].x, nightCrime[i].y, weight, theGrid)
+        findNodeToPlaceCrimeWeight(nightCrime[i].x, nightCrime[i].y, weight, theNightGrid)
       }
-      console.log(theGrid.slice(6600, 6700))
+      // console.log(theDayGrid.slice(6600, 6700))
 
   });
 }
