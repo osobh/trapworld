@@ -8,6 +8,7 @@ function GraphEdge(first, second, weight) {
   this.weight = weight;
 }
 
+<<<<<<< HEAD
 function GraphNode(NWcorner, NEcorner, SWcorner, SEcorner, squareNum, weight) { //gonna need to refactor this
   this.NWcorner = NWcorner;
   this.NEcorner = NEcorner;
@@ -15,6 +16,13 @@ function GraphNode(NWcorner, NEcorner, SWcorner, SEcorner, squareNum, weight) { 
   this.SEcorner = SEcorner;
   this.squareNum = squareNum;
   this.weight = weight;
+=======
+function GraphNode(value, category, latlong, weight) {
+  this.value = value;
+  this.category = category;
+  this.latlong = latlong;
+  this.weight = weight
+>>>>>>> master
 }
 
 let edgeWeights = {
@@ -233,10 +241,24 @@ function getData(dataUrl){
           console.log(obj)
           let crimeTime = obj.time.split(":");
           let crimeCategory = obj.category;
+<<<<<<< HEAD
           let x = obj.x;
           let y = obj.y;
           let weight = crimeWeight(crimeCategory)
 
+=======
+         
+      function crimeWeight(crimeCategory){
+            for(var key in edgeWeights){
+              //console.log(edgeWeights[key]);
+              if(key === crimeCategory){
+                //console.log(crimeCategory[key], "BOOOYAAAA");
+                return edgeWeights[key];
+              }
+            }
+          }
+          
+>>>>>>> master
           //console.log( crimeTime[0]);
           let exactCrimeTime =  parseInt(crimeTime[0]);
           if(exactCrimeTime <= 20 && exactCrimeTime >= 6 ){
@@ -244,6 +266,10 @@ function getData(dataUrl){
           // console.log( crimeWeight())
           }else{
             nightCrime.push(exactCrimeTime);
+<<<<<<< HEAD
+=======
+            console.log("It's a night trap out there", exactCrimeTime)
+>>>>>>> master
           }
         }
       }
