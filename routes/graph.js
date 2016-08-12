@@ -8,11 +8,13 @@ function GraphEdge(first, second, weight) {
   this.weight = weight;
 }
 
-function GraphNode(value, category, latlong, weight) {
-  this.value = value;
-  this.category = category;
-  this.latlong = latlong;
-  this.weight = weight
+function GraphNode(NWcorner, NEcorner, SWcorner, SEcorner, squareNum, weight) { //gonna need to refactor this
+  this.NWcorner = NWcorner;
+  this.NEcorner = NEcorner;
+  this.SWcorner = SWcorner;
+  this.SEcorner = SEcorner;
+  this.squareNum = squareNum;
+  this.weight = weight;
 }
 
 let edgeWeights = {
@@ -29,7 +31,7 @@ let edgeWeights = {
   BURGLARY: 5,
   VANDALISM: 3,
   'SUSPICIOUS OCC': 3,
-  WEAPONLAWS: 4,
+  'WEAPON LAWS': 4,
   TRESPASS: 3,
   WARRANTS: 2,
   ARSON: 6,
@@ -55,34 +57,30 @@ function Graph() {
   }
 
 // Add a node to the list of nodes
-  this.addNode = function(value, time, category, latlong, weight) {
-    if (this.findNode(value) != null) {
+  this.addNode = function(NWcorner, NEcorner, SWcorner, SEcorner, squareNum) {
+    if (this.findNode(squareNum) != null) {
       return null;
     }
-    this.nodes.push(new GraphNode(value, time, category, latlong, weight));
+    this.nodes.push(new GraphNode(NWcorner, NEcorner, SWcorner, SEcorner, squareNum));
   }
 
-
 // Add an edge between 2 nodes and give it a weight
-  this.addEdge = function(source, destination, weight) {
-    let first = this.findNode(source);
-    let second = this.findNode(destination);
-    if (first == null || second == null) {
-      return;
+  this.addEdge = function(top, bottom, left, right, weight) {
+    var north = this.findNode(top);
+    var south = this.findNode(bottom);
+    var west = this.findNode(left);
+    var east = this.findNode(right);
     }
-    this.edges.push(new GraphEdge(first, second, weight));
+    this.edges.push(new GraphEdge(north, south, west, east, weight));
   }
 
 // Get the size of the graph by returning how many nodes are in the graph
   this.size = function() {
-
-  return this.nodes.length;
-
+    return this.nodes.length;
   }
 
   // Find the total number of edges in the graph
   this.numEdges = function() {
-
     return this.edges.length;
   }
 
@@ -98,8 +96,6 @@ function Graph() {
     }
     return sum;
   }
-
-
   // Find all node values a node is connected to.
   // Return all node values at the other side of an edge of the target node
   // Remember that edges are not directional: A -> B also implies B -> A
@@ -170,10 +166,9 @@ function createGrid(lat1, lon1, lat2, lon2, squareSide){
   let finalArr = [];
   let latSquareSpace = (lat2-lat1)/squareSide
   let lonSquareSpace = (lon2-lon1)/squareSide
-  let squareNum = 0;
+  let squareNum = 1;
   // let node = trapGraph.addNode();
   // let edge = trapGraph.addEdge();
-  
   for(let i = 0; i < squareSide; i++){
       for(let j =  0; j < squareSide; j++){
         let squareCoordinates = [lat1 + i*(latSquareSpace), lon1 + j*(lonSquareSpace),  squareNum];
@@ -181,36 +176,67 @@ function createGrid(lat1, lon1, lat2, lon2, squareSide){
         squareNum++;
       }
   }
-
-  //console.log(trapGraph);
-  //console.log(finalArr);
   return finalArr;
 }
+var points = createGrid(37.808179, -122.531204, 37.700398, -122.350273, 100); //grid of 100x100
 
-// CalcDistanceBetween(37.808179, -122.531204, 37.700398, -122.350273);
-createGrid(37.808179, -122.531204, 37.700398, -122.350273, 100);
+function finalGridSquares(array){ //puts grid via array of 4 points (also within the array, along with square number)
+  var squares = [];
+  var squareNum = 1;
 
+  for (var i = 0; i < 100*100 - 100; i++) {
+    if(i % 100 !== 99){
+      var node = new GraphNode(array[i], array[i + 1], array[i + 100], array[i + 101], squareNum);
+      squareNum++;
+      squares.push(node)
+    }
+  }
+    return squares;
+}
+
+function findNodeToPlaceCrimeWeight(x, y, weight){ //crime has lat and long & serverity in object form
+  for (var i = 0; i < squares.length; i++){
+    if((x > squares.NWcorner[0])&&(x < squares.NEcorner[0])&&(y > squares.SWcorner[1])&&(y < squares.NWcorner[1])){
+      this.node.weight += weight;
+    }
+  }
+};
+
+function crimeWeight(crimeCategory){
+   for(var key in edgeWeights){
+     console.log(edgeWeights[key]);
+     if(key === crimeCategory){
+       //console.log(crimeCategory[key], "BOOOYAAAA");
+       return edgeWeights[key];
+     }
+   }
+ }
 
 //Grabbing the needed data from the CrimeData API
 function getData(dataUrl){
-var info = [];
-//console.log(dataUrl)
-//Here we request the data from the URL we want to hit
-request(dataUrl, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        info.push(JSON.parse(body));
-      }
-
+  var info = [];
+  //console.log(dataUrl)
+  //Here we request the data from the URL we want to hit
+  request(dataUrl, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          info.push(JSON.parse(body));
+        }
   //Here we loop through the returned JSON file and provide an interface to extracting values from the entire dataset
       var nightCrime = [];
       var dayCrime = [];
+      // console.log(info)
       for(let i = 0 ; i < info.length ; i++){
         var newData = (info[i]);
+        console.log(newData)
         for(let key in newData) {
           let obj = newData[key];
+          console.log(obj)
           let crimeTime = obj.time.split(":");
           let crimeCategory = obj.category;
-         
+          let x = obj.x;
+          let y = obj.y;
+          let weight = crimeWeight(crimeCategory)
+
       function crimeWeight(crimeCategory){
             for(var key in edgeWeights){
               //console.log(edgeWeights[key]);
@@ -220,24 +246,20 @@ request(dataUrl, function (error, response, body) {
               }
             }
           }
-          
           //console.log( crimeTime[0]);
           let exactCrimeTime =  parseInt(crimeTime[0]);
           if(exactCrimeTime <= 20 && exactCrimeTime >= 6 ){
             dayCrime.push(exactCrimeTime);
-          console.log(crimeCategory, crimeWeight())
+          // console.log( crimeWeight())
           }else{
             nightCrime.push(exactCrimeTime);
+
             console.log("It's a night trap out there", exactCrimeTime)
           }
-      //console.log("It's Night Crime", nightCrime);
         }
       }
-
   });
-// return info;
 }
-
 getData('https://data.sfgov.org/resource/9v2m-8wqu.json');
 
 module.exports = Graph;
