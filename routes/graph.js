@@ -73,7 +73,14 @@ function Graph() {
 //     this.edges.push(new GraphEdge(north, south, west, east, edgeWeight));
 //   }
 
-
+// Add an edge between 2 nodes and give it a weight
+  this.addEdge = function(top, bottom, left, right, weight) {
+    var north = this.findNode(top);
+    var south = this.findNode(bottom);
+    var west = this.findNode(left);
+    var east = this.findNode(right);
+    this.edges.push(new GraphEdge(north, south, west, east, weight));
+  }
 
 // Get the size of the graph by returning how many nodes are in the graph
   this.size = function() {
@@ -194,7 +201,7 @@ function Graph() {
     return sum;
   }
 
-}
+
 //---------------------------------------------------------------------------------
 // ----------------- This is where we create ou
 
@@ -346,7 +353,10 @@ function getData(dataUrl){
 }
 getData('https://data.sfgov.org/resource/9v2m-8wqu.json');
 
+
 console.log(theDayGrid[3935])
 // console.log(newNightGrid.slice(2600,2700));
 
+
+}
 module.exports = Graph;
