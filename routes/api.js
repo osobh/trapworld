@@ -15,18 +15,7 @@ router.get('/crime', function(req, res) {
           if (!error && response.statusCode == 200) {
             var dayCrime = [];
             var correctUrl = JSON.parse(body);
-            for(var key in correctUrl){
-            dayCrime.push(correctUrl);
-            }
-            //console.log(dayCrime)
-            for(var i = 0 ; i < dayCrime.length; i++){
-                for(var key in dayCrime) {
-                  var obj = dayCrime[key];
-                    
-                  var crimeCategory = obj.category;
-                  console.log(obj.date);
-                }
-            }
+            res.json(correctUrl)
           }
 });
 });
