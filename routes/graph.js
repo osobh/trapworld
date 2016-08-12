@@ -70,7 +70,6 @@ function Graph() {
     var south = this.findNode(bottom);
     var west = this.findNode(left);
     var east = this.findNode(right);
-    }
     this.edges.push(new GraphEdge(north, south, west, east, weight));
   }
 
@@ -153,7 +152,7 @@ function Graph() {
     return sum;
   }
 
-}
+
 //---------------------------------------------------------------------------------
 // ----------------- This is where we create ou
 
@@ -261,5 +260,5 @@ function getData(dataUrl){
   });
 }
 getData('https://data.sfgov.org/resource/9v2m-8wqu.json');
-
+}
 module.exports = Graph;
