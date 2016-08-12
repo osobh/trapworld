@@ -109,12 +109,9 @@ function Graph() {
       let secondEdge = this.edges[i].second.value
       if(value === firstEdge){
         finalArr.push(secondEdge);
-      }
-
-      else if(value === secondEdge){
+      }else if(value === secondEdge){
         finalArr.push(firstEdge);
       }
-
     }
     return finalArr;
   }
@@ -123,12 +120,52 @@ function Graph() {
   // Find the optimal route from start to finish
   // Return each edge required to traverse the route
   // Remember that edges are not directional: A -> B also implies B -> A
-  this.findPath = function(start, finish) {
-    // TODO;
-    console.log(start);
-    let neighbors = this.findNeighbors(start);
-    console.log(neighbors);
-    return [];
+  // this.findPath = function(start, finish) {
+  //   // TODO;
+    // console.log(start);
+    // let neighbors = this.findNeighbors(start);
+    // console.log(neighbors);
+    // return [];
+    this.findPath = function(start, finish) {
+   // TODO
+   var checked = [];
+   let queue = [{
+       val: start,
+       weight: 0,
+       path: []
+     }];
+   while (queue.length > 0) {
+     queue.sort((a,b) => {return a.weight - b.weight;});
+     console.log(queue);
+     let currentQueue = queue.shift();
+     if (checked.indexOf(currentQueue.val) === -1) {
+       if (currentQueue.val === finish) {
+         return currentQueue.path;
+       }
+       for (let i = 0; i < this.edges.length; i++) {
+         if (this.edges[i].first.value === currentQueue.val) {
+           let currentPath = currentQueue.path.slice(0);
+           currentPath.push(this.edges[i]);
+           queue.push({
+             val: this.edges[i].second.value,
+             weight: currentQueue.weight + this.edges[i].weight,
+             path: currentPath
+           });
+         } else if (this.edges[i].second.value === currentQueue.val) {
+           let currentPath = currentQueue.path.slice(0);
+           currentPath.push(this.edges[i]);
+           queue.push({
+             val: this.edges[i].first.value,
+             weight: currentQueue.weight + this.edges[i].weight,
+             path: currentPath
+           });
+         }
+       }
+       checked.push(currentQueue.val);
+     }
+   }
+ }
+
   }
 
   // Return a list of any nodes that are orphans.
@@ -210,6 +247,12 @@ function crimeWeight(crimeCategory){
        return edgeWeights[key];
      }
    }
+ }
+
+ function manhattanDistance(node){
+    var dx = abs(node.x - goal.x)
+    var dy = abs(node.y - goal.y)
+    return (dx + dy);
  }
 
 //Grabbing the needed data from the CrimeData API
