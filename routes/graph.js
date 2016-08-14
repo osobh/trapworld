@@ -203,7 +203,7 @@ function Graph() {
 
 
 //---------------------------------------------------------------------------------
-// ----------------- This is where we create ou
+// ----------------- This is where we create our Graph-----------------------------
 
 let trapGraph;
 trapGraph = new Graph();
