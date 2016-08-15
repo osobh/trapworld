@@ -2,6 +2,7 @@
 <html>
   <head>
   <link href="stylesheets/style.css" rel="stylesheet" type="text/css" />
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -13,6 +14,8 @@
           <br>
           <input id="show-night" type="button" value="Show Night Crimes">
           <input id="hide-night" type="button" value="Hide Night Crimes">
+          <hr>
+          <input id="show-grid" type="button" value="Show Grid">
         </div>
         <hr>
         <input id="pathfinder" type="button" value="Start Pathfinding">
@@ -27,8 +30,9 @@
       var nightmarkers = [];
       var nightstyles = [{"featureType":"all","elementType":"labels.text.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"color":"#000000"},{"lightness":13}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#144b53"},{"lightness":14},{"weight":1.4}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#08304b"}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#0c4152"},{"lightness":5}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#000000"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#0b434f"},{"lightness":25}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#000000"}]},{"featureType":"road.arterial","elementType":"geometry.stroke","stylers":[{"color":"#0b3d51"},{"lightness":16}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"}]},{"featureType":"transit","elementType":"all","stylers":[{"color":"#146474"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#021019"}]}];
       var styles = [{"featureType":"administrative.province","elementType":"all","stylers":[{"visibility":"off"},{"lightness":"1"},{"saturation":"44"}]},{"featureType":"landscape","elementType":"all","stylers":[{"saturation":"0"},{"lightness":"0"},{"visibility":"on"},{"color":"#ffffff"},{"gamma":"1"}]},{"featureType":"poi","elementType":"all","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"simplified"}]},{"featureType":"poi.park","elementType":"all","stylers":[{"visibility":"simplified"},{"hue":"#ff0000"}]},{"featureType":"poi.park","elementType":"labels.icon","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"saturation":-100},{"visibility":"on"},{"lightness":"8"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"saturation":-100},{"lightness":"-18"},{"visibility":"on"}]},{"featureType":"road.local","elementType":"all","stylers":[{"saturation":-100},{"lightness":"-20"},{"visibility":"on"}]},{"featureType":"transit","elementType":"all","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"transit.station.airport","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffff00"},{"lightness":"-26"},{"saturation":-97}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":-25},{"saturation":-100}]}];
-       
       
+	    var rectArr=[];
+	    var cols=["red","blue","green","yellow","orange","gray"]
       
       function initMap() {
         // Create a styles array to use with the map.
@@ -38,6 +42,19 @@
           zoom: 12,
           styles: styles,
           mapTypeControl: false
+        });
+         
+         var bounds = new google.maps.LatLngBounds();
+         console.log(bounds);
+         
+         var rectangle = new google.maps.Rectangle({
+          strokeColor: '#FF0000',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#FF0000',
+          fillOpacity: 0.35,
+          map: map,
+          bounds: bounds
         });
        
     var locations = [];
@@ -176,9 +193,22 @@
         document.getElementById('hide-day').addEventListener('click', hideListings);
         document.getElementById('show-night').addEventListener('click', showNightListings);
         document.getElementById('hide-night').addEventListener('click', hideNightListings);
-       
+        document.getElementById('show-grid').addEventListener('click', showGrid);
       }
-
+      // This function will create and display the grid
+      function showGrid() {
+        var bounds = new google.maps.LatLngBounds();
+        // Extend the boundaries of the map for each tile and display the tile
+        for (var i = 0; i < nightmarkers.length; i++) {
+          nightmarkers[i].setMap(map);
+          bounds.extend(nightmarkers[i].position);
+        }
+        map.fitBounds(bounds);
+        map.setOptions({styles: nightstyles});
+      }
+    
+    
+    
       // This function will loop through the markers array and display them all.
       function showNightListings() {
         var bounds = new google.maps.LatLngBounds();
@@ -227,6 +257,10 @@
           new google.maps.Size(21,34));
         return markerImage;
       }
+      
+      
+      
+      
     </script>
 
     <script async defer
