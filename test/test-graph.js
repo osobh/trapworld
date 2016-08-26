@@ -22,7 +22,7 @@ describe('GraphNode', function() {
 
 });
 
-describe('Graph.createGrid', function(){
+describe('Graph.__createGrid', function(){
   var testGraph = new Graph(3, 0, 0, 3, 3);
   it('should create the grid based off properties passed in', function(){
     console.log(testGraph.__createGrid(3, 0, 0, 3, 3), 'TESTY GRAPHY')
@@ -37,5 +37,18 @@ describe('Graph.createGrid', function(){
       [ 1, 1, 8 ],
       [ 1, 2, 9 ]
     ])
+  })
+})
+
+describe('Graph.finalGridSquares', function() {
+  var testGraph = new Graph(100, 0, 0, 100, 100);
+  it('should create grid squares with a counter', function () {
+    expect(testGraph.finalGridSquares().length).to.equal(9801)
+    console.log(testGraph.finalGridSquares()[0]);
+  })
+  it('should be an array of graph node objects', function(){
+    expect(testGraph.finalGridSquares()[0]).to.deep.equal(
+      new GraphNode(testGraph.points[0], testGraph.points[1], testGraph.points[100], testGraph.points[101], 1)
+    )
   })
 })
