@@ -244,6 +244,7 @@ function Graph(NWCorner, NECorner, SWCorner, SECorner, gridSize) {
         pointNumber++;
       }
     }
+    // console.log(finalArr, "SEE DEAD PEOPLE")
     return finalArr;
   };
 

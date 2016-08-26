@@ -25,8 +25,9 @@ describe('GraphNode', function() {
 describe('Graph.createGrid', function(){
   var testGraph = new Graph(3, 0, 0, 3, 3);
   it('should create the grid based off properties passed in', function(){
-    // console.log(testGraph, 'TESTY GRAPHY')
-    expect(testGraph.__createGrid(3, 0, 0, 3, 3).to.deep.equal([ [ 3, 0, 1 ],
+    console.log(testGraph.__createGrid(3, 0, 0, 3, 3), 'TESTY GRAPHY')
+    expect(testGraph.__createGrid(3, 0, 0, 3, 3)).to.deep.equal([
+      [ 3, 0, 1 ],
       [ 3, 1, 2 ],
       [ 3, 2, 3 ],
       [ 2, 0, 4 ],
@@ -35,6 +36,6 @@ describe('Graph.createGrid', function(){
       [ 1, 0, 7 ],
       [ 1, 1, 8 ],
       [ 1, 2, 9 ]
-    ]))
+    ])
   })
 })
