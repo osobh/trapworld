@@ -48,7 +48,7 @@ function Graph(NWCorner, NECorner, SWCorner, SECorner, gridSize) {
   this.dayEdges = [];
   this.nightEdges = [];
   this.points = this.__createGrid(NWCorner, NECorner, SWCorner, SECorner, gridSize); //grid of 100x100
-  console.log(this.points, "POINTY POINTY")
+  // console.log(this.points, "POINTY POINTY")
 
   this.dayGrid = this.finalGridSquares();
   this.nightGrid = this.finalGridSquares();
@@ -236,13 +236,15 @@ function Graph(NWCorner, NECorner, SWCorner, SECorner, gridSize) {
     let distanceBetweenLongs = (lon2-lon1)/squareSide; // how many splices per column
     let pointNumber = 1; // starting from the top left
     for(let i = 0; i < squareSide; i++){
+      var tempArr = []
       for(let j =  0; j < squareSide; j++){
         let distanceToNewLatPoint = lat1 + i*(distanceBetweenLats)
         let distanceToNewLongPoint = lon1 + j*(distanceBetweenLongs)
         let pointCoordinates = [distanceToNewLatPoint, distanceToNewLongPoint,  pointNumber];
-        finalArr.push(pointCoordinates);
+        tempArr.push(pointCoordinates);
         pointNumber++;
       }
+      finalArr.push(tempArr);
     }
     // console.log(finalArr, "SEE DEAD PEOPLE")
     return finalArr;
@@ -252,7 +254,7 @@ function Graph(NWCorner, NECorner, SWCorner, SECorner, gridSize) {
       var squares = [];
       var squareNum = 1;
 
-      for (var i = 0; i < 100*100 - 100; i++) {
+      for (var i = 0; i < 100*100 - 100; i++) { // grid is *always* 100 X 100
         if(i % 100 !== 99){
           var node = new GraphNode(this.points[i], this.points[i + 1], this.points[i + 100], this.points[i + 101], squareNum);
           squareNum++;
@@ -262,11 +264,15 @@ function Graph(NWCorner, NECorner, SWCorner, SECorner, gridSize) {
       return squares;
     }
 
+    Graph.prototype.traverse = function(thisNode, nextNode) {
+      for (node in )
+    }
+
     Graph.prototype.pathfinder = function(start, end){
       var road = [];
       var currentSquare;
       var currentWeight;
-      var fastestDistance = manhattanDistance(start, end);
+      var minDistance = manhattanDistance(start, end);
       var weightMin = start.weight;
       while(currentSquare !== end){
         if(currentSquare.weight < next.weight){
@@ -319,6 +325,7 @@ function Graph(NWCorner, NECorner, SWCorner, SECorner, gridSize) {
         for (let i = 0; i < dayCrime.length; i++) {
           let weight = self.crimeWeight(dayCrime[i].category);
           self.findNodeToPlaceCrimeWeight(dayCrime[i].x, dayCrime[i].y, weight, self.dayGrid);
+          // console.log()
         }
 
         for (let i = 0; i < nightCrime.length; i++) {
@@ -331,8 +338,8 @@ function Graph(NWCorner, NECorner, SWCorner, SECorner, gridSize) {
   //---------------------------------------------------------------------------------
   // ----------------- This is where we create ou
 
-//   var trapGraph = new Graph(37.808179, -122.531204, 37.700398, -122.350273, 100);
-//   // console.log(self.nightGrid.slice(6800,6900))
+  var trapGraph = new Graph(37.808179, -122.531204, 37.700398, -122.350273, 100);
+  // console.log(trapGraph.nightGrid.slice(6800,6900))
 //
 //
 //
@@ -340,9 +347,9 @@ function Graph(NWCorner, NECorner, SWCorner, SECorner, gridSize) {
 //
 //
 //
-// var noScope = trapGraph.getData('https://data.sfgov.org/resource/9v2m-8wqu.json', function(){
-//     console.log(trapGraph.nightGrid.slice(2300,2400))
-// });
+var noScope = trapGraph.getData('https://data.sfgov.org/resource/9v2m-8wqu.json', function(){
+    console.log(trapGraph.nightGrid.slice(2300,2400))
+});
 //write tests for
   // console.log(noScope)
 
