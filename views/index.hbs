@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <link href="stylesheets/style.css" rel="stylesheet" type="text/css" />
+  <link href="public/stylesheets/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <div class="container">
@@ -21,6 +21,7 @@
       <div id="map"></div>
     </div>
     <script>
+      console.log(window.location);
       var map;
       // Create a new blank array for all the listing markers.
       var markers = [];
@@ -43,10 +44,12 @@
     var locations = [];
     var nightLocations = [];
 
+    console.log("Map: ",map);
+
     $.ajax({
 
     // The URL for the request
-    url: "https://trapworld.dyndns.org/api/crime/night",
+    url: "http://localhost:3000",
 
     // Whether this is a POST or GET request
     type: "GET",
@@ -91,7 +94,7 @@
    $.ajax({
 
     // The URL for the request
-    url: "https://trapworld.dyndns.org/api/crime/day",
+    url: "http://localhost:3000",
 
     // Whether this is a POST or GET request
     type: "GET",
@@ -193,6 +196,7 @@
 
       function showDayListings() {
         var bounds = new google.maps.LatLngBounds();
+        //map.setCenter({lat: 37.7749, lng: -122.4194});
         // Extend the boundaries of the map for each marker and display the marker
         for (var i = 0; i < markers.length; i++) {
           markers[i].setMap(map);
@@ -228,6 +232,9 @@
         return markerImage;
       }
 
+    </script>
+    <script src="./routes/graph.js">
+      console.log(noScope);
     </script>
 
     <script async defer
