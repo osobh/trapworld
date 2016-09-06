@@ -66,7 +66,7 @@ function Graph(NWCorner, NECorner, SWCorner, SECorner, gridSize) {
 
 
   // Add an edge between 2 nodes and give it a weight
-  Graph.prototype.addEdge = function(top, bottom, left, right, weight) {
+  Graph.prototype.addEdge = function(top, bottom, left, right, weight) { //would this work if I'm already on the top or bottom of the map?
     var north = this.findNode(top);
     var south = this.findNode(bottom);
     var west = this.findNode(left);
@@ -126,50 +126,36 @@ function Graph(NWCorner, NECorner, SWCorner, SECorner, gridSize) {
   // Return each edge required to traverse the route
   // Remember that edges are not directional: A -> B also implies B -> A
   // this.findPath = function(start, finish) {
-  //   // TODO;
-  // console.log(start);
-  // let neighbors = this.findNeighbors(start);
-  // console.log(neighbors);
-  // return [];
-  // Graph.prototype.findPath = function(start, finish, edges) {
-  //   // TODO
-  //   var checked = [];
-  //   let roadAhead = [{
-  //     val: start,
-  //     weight: 0,
-  //     path: []
-  //   }];
-  //   while (roadAhead.length > 0) {
-  //     roadAhead.sort((a,b) => {return a.weight - b.weight;});
-  //     console.log(roadAhead);
-  //     let currentQueue = roadAhead.shift();
-  //     if (checked.indexOf(greedyFirst.val) === -1) {
-  //       if (greedyFirst.val === finish) {
-  //         return greedyFirst.path;
-  //       }
-  //       for (let i = 0; i < edges.length; i++) {
-  //         if (edges[i].first.value === greedyFirst.val) {
-  //           let currentPath = greedyFirst.path.slice(0);
-  //           currentPath.push(edges[i]);
-  //           roadAhead.push({
-  //             val: edges[i].second.value,
-  //             weight: greedyFirst.weight + edges[i].weight,
-  //             path: currentPath
-  //           });
-  //         } else if (edges[i].second.value === greedyFirst.val) {
-  //           let currentPath = greedyFirst.path.slice(0);
-  //           currentPath.push(edges[i]);
-  //           roadAhead.push({
-  //             val: edges[i].first.value,
-  //             weight: greedyFirst.weight + edges[i].weight,
-  //             path: currentPath
-  //           });
-  //         }
-  //       }
-  //       checked.push(greedyFirst.val);
-  //     }
-  //   }
-  // };
+  Graph.prototype.findPath = function(start, finish) { //first and second makes no sense. figure this out, look around you in the traversal.
+    let visited = [];
+    let queue = [{
+      squareNumber: start,
+      priority: 0,
+      path: []
+    }];
+    while (queue.length > 0) {
+      let currentNode = queue.shift();
+      if (visited.indexOf(currentNode.squareNumber) === -1) {
+        if (currentNode.squareNumber === finish) {
+          return currentNode.path;
+        }
+        for (let i = 0; i < this.nextNode.length; i++) {
+          if (currentNode.squareNumber === this.nextNode[i].squareNumber) {
+            let currentPath = currentNode.path.slice(0);
+            currentPath.push(this.nextNode[i]);
+            let queueItem = {
+              squareNumber: this.nextNode[i].squareNumber,
+              priority: currentNode.priority + this.nextNode[i].weight,
+              path: currentPath
+            }
+            queue.push(queueItem);
+          }
+          visited.push(currentNode.squareNumber)
+        }
+      }
+    }
+    return null;
+  }
 
   // Return a list of any nodes that are orphans.
   // An orphan is any node with no edges.
@@ -252,7 +238,6 @@ function Graph(NWCorner, NECorner, SWCorner, SECorner, gridSize) {
       }
       finalArr.push(tempArr);
     }
-    // console.log(finalArr, "SEE DEAD PEOPLE")
     console.log(finalArr);
     return finalArr;
   };
@@ -339,8 +324,6 @@ function Graph(NWCorner, NECorner, SWCorner, SECorner, gridSize) {
             // console.log(obj)
             let crimeTime = obj.time.split(":");
             let crimeCategory = obj.category;
-
-
 
             let exactCrimeTime =  parseInt(crimeTime[0]);
             if(exactCrimeTime <= 20 && exactCrimeTime >= 6 ){

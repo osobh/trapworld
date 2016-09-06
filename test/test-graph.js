@@ -1,16 +1,16 @@
 'use strict';
 
-let expect = require('chai').expect;
-let {Graph, GraphEdge, GraphNode} = require('../routes/graph.js');
+var expect = require('chai').expect;
+var {Graph, GraphEdge, GraphNode} = require('../routes/graph.js');
 
 console.log(GraphNode)
 
-describe("Graph", function(){
-
-  it("should take in 4 points, and the grid size (dimension)", function() {
-    expect()
-  })
-})
+// describe("Graph", function(){
+//
+//   it("should take in 4 points, and the grid size (dimension)", function() {
+//     expect()
+//   })
+// })
 
 describe('GraphNode', function() {
   var testGraphNode = new GraphNode(
@@ -60,26 +60,26 @@ describe('Graph.finalGridSquares', function() {
   })
 })
 
-describe("Graph.createEdgeWeights", function() {
-  var testGraph = new Graph(100, 0, 0, 100, 100);
-  it('should create edges with proper weights on it', function(){
+// describe("Graph.createEdgeWeights", function() {
+//   var testGraph = new Graph(100, 0, 0, 100, 100);
+//   it('should create edges with proper weights on it', function(){
+//
+//
+//   })
+// })
 
-
-  })
-})
-
-describe("Graph.getData", function() {
-  var testGraph = new Graph(100, 0, 0, 100, 100);
-  it('get info from proper website', function(){
-
-
-  })
-})
-
-describe("Graph.findPath", function() {
-  var testGraph = new Graph(100, 0, 0, 100, 100);
-  it('properly finds the path to get from point a to point b', function(){
-
-
-  })
-})
+// describe("Graph.getData", function() {
+//   var testGraph = new Graph(100, 0, 0, 100, 100);
+//   it('get info from proper website', function(){
+//
+//
+//   })
+// })
+//
+// describe("Graph.findPath", function() {
+//   var testGraph = new Graph(100, 0, 0, 100, 100);
+//   it('properly finds the path to get from point a to point b', function(){
+//
+//
+//   })
+// })
